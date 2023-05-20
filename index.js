@@ -53,7 +53,15 @@ async function run() {
     // send all toys data to the AllToys page
     app.get("/alltoys", async (req, res) => {
       const cursor = categoryCollection.find();
-      const result = await cursor.toArray();
+      const result = await cursor.limit(20).toArray();
+      res.send(result);
+    });
+
+    // send dynamic data in details page
+    app.get("/alltoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await categoryCollection.findOne(query);
       res.send(result);
     });
 
