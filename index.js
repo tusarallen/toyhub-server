@@ -67,6 +67,41 @@ async function run() {
       res.send(result);
     });
 
+    // send specific data for update 
+    app.get("/updatetoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await categoryCollection.findOne(query);
+      res.send(result);
+    });
+
+    // update mytoys data 
+    app.put("/updatetoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const info = req.body;
+      const updateToys = {
+        $set: {
+          price: info.price,
+          quantity: info.quantity,
+          description: info.description,
+        },
+      };
+      const result = await categoryCollection.updateOne(
+        filter,
+        updateToys,
+      );
+      res.send(result);
+    });
+
+    //  delete data in mytoys page
+    app.delete("/mytoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await categoryCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
