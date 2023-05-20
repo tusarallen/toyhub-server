@@ -35,9 +35,35 @@ async function run() {
     });
 
     app.get("/categories/:id", async (req, res) => {
-        const id = req.params.id;
+      const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await categoryCollection.findOne(query);
+      res.send(result);
+    });
+
+    // recive data from client side and store data in mongodb database
+    app.post("/toyinfos", async (req, res) => {
+      const info = req.body;
+      console.log(info);
+      //  store data in mongodb
+      const result = await categoryCollection.insertOne(info);
+      res.send(result);
+    });
+
+    // send all toys data to the AllToys page
+    app.get("/alltoys", async (req, res) => {
+      const cursor = categoryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // send some data in client side using query
+    app.get("/mytoys", async (req, res) => {
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query.email };
+      }
+      const result = await categoryCollection.find(query).toArray();
       res.send(result);
     });
 
