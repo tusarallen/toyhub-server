@@ -72,6 +72,7 @@ async function run() {
       res.json(result);
     });
 
+    // sorting part
     app.get("/sorting", async (req, res) => {
       const email = req.query.email;
       const filter = { email: email };
