@@ -47,6 +47,7 @@ async function run() {
       res.json(result);
     });
 
+    // send data to the client side for toy category
     app.get("/categories", async (req, res) => {
       const cursor = categoryCollection.find();
       const result = await cursor.toArray();
